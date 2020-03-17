@@ -6,24 +6,34 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
-
     defaultConfig {
-        applicationId "fr.barfou"
+        applicationId "fr.paulfgx.githubproject"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
+        buildConfigField("String", "BASE_URL", "\"...\"")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
+        debug {
+            minifyEnabled false
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {

@@ -13,14 +13,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/holder_user_root"
+        android:id="@+id/holder_salle_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         tools:layout_height="wrap_content">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/holder_user_circular_card"
+            android:id="@+id/holder_salle_circular_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="23dp"
@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/holder_user_avatar"
+                android:id="@+id/holder_salle_imgview"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 tools:src="@tools:sample/avatars" />
@@ -37,60 +37,18 @@
         </com.google.android.material.card.MaterialCardView>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/holder_user_login"
+            android:id="@+id/holder_salle_nom"
             style="@style/TextAppearance.MyTheme.Headline6"
             android:layout_width="0dp"
             android:layout_height="24dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:gravity="center_vertical"
-            app:layout_constraintStart_toEndOf="@id/holder_user_circular_card"
-            app:layout_constraintTop_toTopOf="@id/holder_user_circular_card"
-            app:layout_constraintEnd_toStartOf="@id/holder_chevron"
-            tools:text="@tools:sample/full_names" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/holder_user_type"
-            style="@style/TextAppearance.MyTheme.Subtitle1"
-            android:layout_width="0dp"
-            android:layout_height="19dp"
-            app:layout_constraintStart_toStartOf="@id/holder_user_login"
-            app:layout_constraintTop_toBottomOf="@id/holder_user_login"
-            app:layout_constraintEnd_toEndOf="@id/holder_user_login"
-            tools:text="@tools:sample/cities" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/label_site_admin"
-            style="@style/TextAppearance.MyTheme.Subtitle2"
-            android:layout_width="wrap_content"
-            android:layout_height="17dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/site_admin"
-            app:layout_constraintStart_toStartOf="@id/holder_user_type"
-            app:layout_constraintTop_toBottomOf="@id/holder_user_type"
-            tools:text="@string/site_admin" />
-
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/holder_user_site_admin"
-            android:layout_width="wrap_content"
-            android:layout_height="17dp"
-            android:layout_marginStart="5dp"
-            android:text=""
-            android:enabled="false"
-            app:layout_constraintBaseline_toBaselineOf="@id/label_site_admin"
-            app:layout_constraintStart_toEndOf="@id/label_site_admin"
-            tools:checked="true"
-            tools:text=""/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/holder_chevron"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_chevron_right"
+            app:layout_constraintStart_toEndOf="@id/holder_salle_circular_card"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:src="@drawable/ic_chevron_right" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="@tools:sample/full_names" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
