@@ -6,36 +6,26 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardElevation="5dp"
     card_view:cardCornerRadius="8dp"
+    card_view:cardElevation="5dp"
     tools:context="fr.barfou.ui.widget.viewholder.SalleViewHolder"
     tools:showIn="@layout/fragment_list_salle">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/holder_salle_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         tools:layout_height="wrap_content">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/holder_salle_circular_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="23dp"
-            app:strokeColor="@android:color/black"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/holder_salle_imgview_room"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/room"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/holder_salle_imgview"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/room"
-                tools:src="@drawable/room" />
-
-        </com.google.android.material.card.MaterialCardView>
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/room" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/holder_salle_nom"
@@ -43,13 +33,60 @@
             android:layout_width="0dp"
             android:layout_height="24dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginRight="16dp"
+            android:paddingHorizontal="10dp"
             android:gravity="center_vertical"
-            app:layout_constraintStart_toEndOf="@id/holder_salle_circular_card"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guideline"
+            app:layout_constraintStart_toEndOf="@id/holder_salle_imgview_room"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/full_names" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.66" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/holder_salle_imgview_light"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/holder_salle_imgview_presence"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/light_on" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/holder_salle_imgview_presence"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/peoples"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/holder_salle_imgview_light"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/peoples" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/holder_salle_textview_presence"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:singleLine="false"
+            android:text="Aucune présence détectée"
+            android:textSize="9sp"
+            android:textColor="@android:color/black"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/holder_salle_imgview_light"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/peoples" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

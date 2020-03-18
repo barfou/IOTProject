@@ -18,8 +18,16 @@ fun View.dp(number: Number): Int {
     ).roundToInt()
 }
 
+fun View.show(){
+    visibility = View.VISIBLE
+}
+
 fun View.hide(){
     visibility = View.GONE
+}
+
+fun View.invisible(){
+    visibility = View.INVISIBLE
 }
 
 fun View.dismissKeyboard() {

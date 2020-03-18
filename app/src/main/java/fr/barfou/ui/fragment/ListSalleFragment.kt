@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import fr.barfou.R
 import fr.barfou.data.model.Salle
+import fr.barfou.ui.activity.MainActivity
 import fr.barfou.ui.adapter.SalleAdapter
 import fr.barfou.ui.utils.hide
 import fr.barfou.ui.viewmodel.ListSalleViewModel
@@ -36,6 +37,11 @@ class ListSalleFragment : Fragment(), OnSalleClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as? MainActivity)?.supportActionBar?.apply {
+            this.setTitle(R.string.app_name)
+            this.setDisplayHomeAsUpEnabled(false)
+        }
 
         salleAdapter = SalleAdapter(this)
 

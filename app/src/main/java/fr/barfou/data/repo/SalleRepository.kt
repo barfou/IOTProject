@@ -1,5 +1,6 @@
 package fr.barfou.data.repo
 
+import fr.barfou.data.model.Eclairage
 import fr.barfou.data.model.Salle
 import fr.barfou.data.networking.HttpClientManager
 import fr.barfou.data.networking.api.IotApi
@@ -12,9 +13,11 @@ class SalleRepositoryImpl(
     override suspend fun getAllSalles(etablissement_id: Int): List<Salle> {
         // Test Values
         var listSalle = mutableListOf<Salle>()
-        listSalle.add(Salle(etablissement_id = 1, id = 1, nom = "Living Room", presence = true))
-        listSalle.add(Salle(etablissement_id = 1, id = 2, nom = "BedRoom", presence = true))
-        listSalle.add(Salle(etablissement_id = 1, id = 3, nom = "Kitchen", presence = true))
+        listSalle.add(Salle(etablissement_id = 1, id = 1, nom = "Living Room", presence = true, eclairage = emptyList()))
+        var listEclairage = mutableListOf<Eclairage>()
+        listEclairage.add(Eclairage(1, 1, "E1", true))
+        listSalle.add(Salle(etablissement_id = 1, id = 2, nom = "BedRoom", presence = false, eclairage = listEclairage))
+        listSalle.add(Salle(etablissement_id = 1, id = 3, nom = "Kitchen", presence = true, eclairage = listEclairage))
         return listSalle
     }
 }
