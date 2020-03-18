@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     card_view:cardCornerRadius="0dp"
-    card_view:cardElevation="2dp"
+    card_view:cardElevation="1dp"
     tools:context="fr.barfou.ui.widget.viewholder.SalleViewHolder"
     tools:showIn="@layout/fragment_list_salle">
 
@@ -23,7 +23,6 @@
             style="@style/TextAppearance.MyTheme.Body1"
             android:layout_width="0dp"
             android:layout_height="24dp"
-            android:paddingHorizontal="10dp"
             android:gravity="center_vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

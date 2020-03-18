@@ -7,52 +7,98 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.ListSalleFragment">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/holder_details_salle_nom"
-        android:layout_width="0dp"
+    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/card_view_1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="16dp"
-        android:layout_marginTop="16dp"
-        style="@style/TextAppearance.MyTheme.Body1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/holder_details_salle_presence_label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:text="Présence"
-        android:paddingHorizontal="16dp"
-        android:layout_marginTop="16dp"
-        style="@style/TextAppearance.MyTheme.Body1"
-        app:layout_constraintTop_toBottomOf="@id/holder_details_salle_nom"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/holder_details_salle_presence"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/holder_details_salle_presence"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical|right"
-        android:paddingHorizontal="16dp"
-        style="@style/TextAppearance.MyTheme.Body1"
-        app:layout_constraintTop_toTopOf="@id/holder_details_salle_presence_label"
+        android:layout_marginBottom="1dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/holder_details_salle_presence_label"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        card_view:cardCornerRadius="0dp"
+        card_view:cardElevation="1dp"
+        tools:context="fr.barfou.ui.widget.viewholder.SalleViewHolder"
+        tools:showIn="@layout/fragment_list_salle">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/holder_details_salle_nom"
+            style="@style/TextAppearance.MyTheme.Headline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="16dp" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/card_view_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_view_1"
+        android:layout_marginTop="1dp"
+        card_view:cardCornerRadius="0dp"
+        card_view:cardElevation="1dp"
+        tools:context="fr.barfou.ui.widget.viewholder.SalleViewHolder"
+        tools:showIn="@layout/fragment_list_salle">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            tools:context=".ui.fragment.ListSalleFragment">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/holder_details_salle_presence_label"
+                style="@style/TextAppearance.MyTheme.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|left"
+                android:text="Présence"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/holder_details_salle_presence"
+                style="@style/TextAppearance.MyTheme.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|right"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/holder_details_salle_presence_label" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/holder_details_eclairage_label"
+        style="@style/TextAppearance.MyTheme.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingTop="16dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="0dp"
+        android:text="Eclairages"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_view_2" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/holder_details_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/holder_details_salle_presence_label"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="2dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/holder_details_eclairage_label"
         tools:itemCount="5"
         tools:listitem="@layout/holder_eclairage" />
 

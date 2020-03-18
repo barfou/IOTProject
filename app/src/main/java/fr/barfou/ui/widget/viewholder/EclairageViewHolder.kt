@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import fr.barfou.R
 import fr.barfou.data.model.Eclairage
 import kotlinx.android.synthetic.main.holder_eclairage.view.*
-import kotlinx.android.synthetic.main.holder_salle.view.*
 
 class EclairageViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

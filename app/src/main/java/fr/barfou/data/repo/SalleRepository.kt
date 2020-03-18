@@ -13,11 +13,20 @@ class SalleRepositoryImpl(
     override suspend fun getAllSalles(etablissement_id: Int): List<Salle> {
         // Test Values
         var listSalle = mutableListOf<Salle>()
-        listSalle.add(Salle(etablissement_id = 1, id = 1, nom = "Living Room", presence = true, eclairage = emptyList()))
-        var listEclairage = mutableListOf<Eclairage>()
-        listEclairage.add(Eclairage(1, 1, "E1", true))
-        listSalle.add(Salle(etablissement_id = 1, id = 2, nom = "BedRoom", presence = false, eclairage = listEclairage))
-        listSalle.add(Salle(etablissement_id = 1, id = 3, nom = "Kitchen", presence = true, eclairage = listEclairage))
+        var listEclairage1 = mutableListOf<Eclairage>()
+        listEclairage1.add(Eclairage(1, 1, "Tableau", false))
+        listEclairage1.add(Eclairage(1, 1, "Classe", false))
+        listSalle.add(Salle(etablissement_id = 1, id = 1, nom = "2.02", presence = true, eclairage = listEclairage1))
+
+        var listEclairage2 = mutableListOf<Eclairage>()
+        listEclairage2.add(Eclairage(1, 1, "Tableau", true))
+        listEclairage2.add(Eclairage(1, 1, "Classe", false))
+        listSalle.add(Salle(etablissement_id = 1, id = 2, nom = "0.09", presence = false, eclairage = listEclairage2))
+        var listEclairage3 = mutableListOf<Eclairage>()
+        listEclairage3.add(Eclairage(1, 1, "Tableau", true))
+        listEclairage3.add(Eclairage(1, 1, "Rangée 1", true))
+        listEclairage3.add(Eclairage(1, 1, "Rangée 2", true))
+        listSalle.add(Salle(etablissement_id = 1, id = 3, nom = "0.08", presence = true, eclairage = listEclairage3))
         return listSalle
     }
 }
