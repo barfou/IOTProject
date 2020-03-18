@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.navigation.fragment.findNavController
 import fr.barfou.R
 import fr.barfou.data.model.Salle
 import fr.barfou.ui.activity.MainActivity
@@ -57,7 +58,8 @@ class ListSalleFragment : Fragment(), OnSalleClickListener {
     }
 
     override fun invoke(view: View, salle: Salle) {
-        //
+        val direction = ListSalleFragmentDirections.actionSalleListFragmentToSalleDetailsFragment(salle)
+        findNavController().navigate(direction)
     }
 
     companion object {

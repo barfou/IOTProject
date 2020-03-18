@@ -14,14 +14,21 @@
         <action
             android:id="@+id/action_salle_list_fragment_to_salle_details_fragment"
             app:destination="@id/salle_details_fragment"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"/>
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/salle_details_fragment"
         android:name="fr.barfou.ui.fragment.DetailsSalleFragment"
         android:label="fragment_details_salle"
-        tools:layout="@layout/fragment_details_salle" />
+        tools:layout="@layout/fragment_details_salle">
+
+        <argument
+            android:name="salle"
+            app:argType="fr.barfou.data.model.Salle" />
+
+    </fragment>
+
 </navigation>
