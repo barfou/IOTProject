@@ -32,7 +32,8 @@
                 android:id="@+id/holder_salle_imgview"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                tools:src="@tools:sample/avatars" />
+                android:src="@drawable/room"
+                tools:src="@drawable/room" />
 
         </com.google.android.material.card.MaterialCardView>
 

@@ -21,7 +21,6 @@ class SalleViewHolder private constructor(itemView: View) : RecyclerView.ViewHol
         itemView.apply {
             this.setOnClickListener { onClick(it, model) }
             this.holder_salle_nom.text = model.nom
-            this.holder_salle_imgview.setImageResource(R.drawable.ic_arrow_back)
         }
     }
 
