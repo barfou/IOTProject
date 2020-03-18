@@ -78,7 +78,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/holder_details_eclairage_label"
-        style="@style/TextAppearance.MyTheme.Body1"
+        style="@style/TextAppearance.MyTheme.Headline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"

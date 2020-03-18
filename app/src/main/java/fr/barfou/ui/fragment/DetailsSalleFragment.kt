@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import fr.barfou.R
+import fr.barfou.ui.activity.MainActivity
 import fr.barfou.ui.adapter.EclairageAdapter
 import fr.barfou.ui.adapter.SalleAdapter
 import kotlinx.android.synthetic.main.fragment_details_salle.*
@@ -31,9 +32,14 @@ class DetailsSalleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as? MainActivity)?.supportActionBar?.apply {
+            this.setTitle(R.string.app_name)
+            this.setDisplayHomeAsUpEnabled(true)
+        }
+
         val salle = args.salle
 
-        holder_details_salle_nom.text = salle.nom
+        holder_details_salle_nom.text = "Salle " + salle.nom
         when (salle.presence) {
             true -> holder_details_salle_presence.text = "Oui"
             false -> holder_details_salle_presence.text = "Non"
