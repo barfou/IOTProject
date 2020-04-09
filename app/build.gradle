@@ -3,12 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: 'com.google.gms.google-services'  // Google Services plugin
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "fr.paulfgx.githubproject"
+        applicationId "fr.barfou.iotproject"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
@@ -109,4 +110,6 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$glide_version"
     implementation "com.github.bumptech.glide:glide:$glide_version"
     // endregion
+
+    implementation 'com.google.firebase:firebase-database-ktx:19.2.1'
 }

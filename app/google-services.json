@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "6741100546",
+    "firebase_url": "https://iotproj-af41e.firebaseio.com",
+    "project_id": "iotproj-af41e",
+    "storage_bucket": "iotproj-af41e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:6741100546:android:c8c552276c5403c9b47f1b",
+        "android_client_info": {
+          "package_name": "fr.barfou.iotproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "6741100546-1k1546br5lagi1aked3gufci9v3opdu6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJNh-KiUGCI3CCF7ptHE582vEc_XwFD68"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "6741100546-1k1546br5lagi1aked3gufci9v3opdu6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
