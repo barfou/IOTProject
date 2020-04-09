@@ -1,11 +1,11 @@
-package fr.barfou.ui.widget.viewholder
+package fr.barfou.iotproject.ui.widget.viewholder
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import fr.barfou.R
-import fr.barfou.data.model.Eclairage
+import fr.barfou.iotproject.R
+import fr.barfou.iotproject.data.model.Eclairage
 import kotlinx.android.synthetic.main.holder_eclairage.view.*
 
 class EclairageViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -31,7 +31,9 @@ class EclairageViewHolder private constructor(itemView: View) : RecyclerView.Vie
                 parent,
                 false
             )
-            return EclairageViewHolder(view)
+            return EclairageViewHolder(
+                view
+            )
         }
     }
 }

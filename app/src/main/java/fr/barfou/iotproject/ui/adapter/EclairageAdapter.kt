@@ -1,12 +1,12 @@
-package fr.barfou.ui.adapter
+package fr.barfou.iotproject.ui.adapter
 
 import android.graphics.Rect
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import fr.barfou.data.model.Eclairage
-import fr.barfou.ui.utils.dp
-import fr.barfou.ui.widget.viewholder.EclairageViewHolder
+import fr.barfou.iotproject.data.model.Eclairage
+import fr.barfou.iotproject.ui.utils.dp
+import fr.barfou.iotproject.ui.widget.viewholder.EclairageViewHolder
 
 class EclairageAdapter() : RecyclerView.Adapter<EclairageViewHolder>() {
 

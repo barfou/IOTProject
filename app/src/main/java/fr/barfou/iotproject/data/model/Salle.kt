@@ -1,4 +1,4 @@
-package fr.barfou.data.model
+package fr.barfou.iotproject.data.model
 
 import android.os.Parcel
 import android.os.Parcelable

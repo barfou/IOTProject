@@ -1,14 +1,13 @@
-package fr.barfou.ui.widget.viewholder
+package fr.barfou.iotproject.ui.widget.viewholder
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import fr.barfou.R
-import fr.barfou.data.model.Salle
-import fr.barfou.ui.utils.hide
-import fr.barfou.ui.utils.invisible
-import fr.barfou.ui.utils.show
+import fr.barfou.iotproject.R
+import fr.barfou.iotproject.data.model.Salle
+import fr.barfou.iotproject.ui.utils.invisible
+import fr.barfou.iotproject.ui.utils.show
 import kotlinx.android.synthetic.main.holder_salle.view.*
 
 /**

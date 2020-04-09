@@ -1,4 +1,4 @@
-package fr.barfou.data.model
+package fr.barfou.iotproject.data.model
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable

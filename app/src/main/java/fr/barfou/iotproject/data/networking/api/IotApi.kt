@@ -1,6 +1,6 @@
-package fr.barfou.data.networking.api
+package fr.barfou.iotproject.data.networking.api
 
-import fr.barfou.data.model.Salle
+import fr.barfou.iotproject.data.model.Salle
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

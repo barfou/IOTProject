@@ -1,4 +1,4 @@
-package fr.barfou.data.networking
+package fr.barfou.iotproject.data.networking
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

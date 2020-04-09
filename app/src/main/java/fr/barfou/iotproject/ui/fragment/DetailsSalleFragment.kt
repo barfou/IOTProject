@@ -1,4 +1,4 @@
-package fr.barfou.ui.fragment
+package fr.barfou.iotproject.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import fr.barfou.R
-import fr.barfou.ui.activity.MainActivity
-import fr.barfou.ui.adapter.EclairageAdapter
-import fr.barfou.ui.adapter.SalleAdapter
+import fr.barfou.iotproject.R
+import fr.barfou.iotproject.ui.activity.MainActivity
+import fr.barfou.iotproject.ui.adapter.EclairageAdapter
 import kotlinx.android.synthetic.main.fragment_details_salle.*
 
 class DetailsSalleFragment : Fragment() {

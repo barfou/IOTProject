@@ -1,13 +1,13 @@
-package fr.barfou.ui.adapter
+package fr.barfou.iotproject.ui.adapter
 
 import android.graphics.Rect
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import fr.barfou.data.model.Salle
-import fr.barfou.ui.utils.dp
-import fr.barfou.ui.widget.viewholder.OnSalleClickListener
-import fr.barfou.ui.widget.viewholder.SalleViewHolder
+import fr.barfou.iotproject.data.model.Salle
+import fr.barfou.iotproject.ui.utils.dp
+import fr.barfou.iotproject.ui.widget.viewholder.OnSalleClickListener
+import fr.barfou.iotproject.ui.widget.viewholder.SalleViewHolder
 
 class SalleAdapter(
     private val onSalleClickListener: OnSalleClickListener

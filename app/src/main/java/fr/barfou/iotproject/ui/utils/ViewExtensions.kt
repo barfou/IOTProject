@@ -1,4 +1,4 @@
-package fr.barfou.ui.utils
+package fr.barfou.iotproject.ui.utils
 
 import android.content.Context
 import android.util.TypedValue

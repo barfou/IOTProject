@@ -5,7 +5,7 @@
     android:id="@+id/user_list_main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.ListSalleFragment">
+    tools:context=".iotproject.ui.fragment.ListSalleFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/salle_list_recycler_view"

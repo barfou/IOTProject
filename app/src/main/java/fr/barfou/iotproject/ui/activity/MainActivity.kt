@@ -1,9 +1,9 @@
-package fr.barfou.ui.activity
+package fr.barfou.iotproject.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.findNavController
-import fr.barfou.R
+import fr.barfou.iotproject.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
