@@ -21,42 +21,46 @@ class SalleRepositoryImpl(
     override suspend fun retrieveSallesFromFirebase(etablissement_id: Int): Map<String, Salle>? {
 
         var success = false
+        var complete = false
         // Get Data once when opening the application
-        runBlocking {
-            sallesRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(error: DatabaseError) {
-                    Log.d("FirebaseError", error.message)
-                    success = false
-                }
+        sallesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("FirebaseError", error.message)
+                success = false
+                complete = true
+            }
 
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                    val taskMap = dataSnapshot.value as? HashMap<*, *>
-                    var res = true
-                    taskMap?.map { entry ->
-                        while (res) {
-                            val salle = entry.value as HashMap<*, *>
-                            val firebaseId = entry.key as String
-                            val etablissementId = salle["etablissement_id"] as Int
-                            val nom = salle["nom"] as String
-                            val presence = salle["presence"] as Boolean
-                            listSalles.put(
-                                firebaseId,
-                                Salle(etablissementId, firebaseId, nom, presence, emptyList())
-                            )
-                            runBlocking {
-                                res = getListEclairageWithId(firebaseId)
-                            }
+                val taskMap = dataSnapshot.value as? HashMap<*, *>
+                var res = true
+                taskMap?.map { entry ->
+                    while (res) {
+                        val salle = entry.value as HashMap<*, *>
+                        val firebaseId = entry.key as String
+                        val etablissementId = salle["etablissement_id"] as Int
+                        val nom = salle["nom"] as String
+                        val presence = salle["presence"] as Boolean
+                        listSalles.put(
+                            firebaseId,
+                            Salle(etablissementId, firebaseId, nom, presence, emptyList())
+                        )
+                        runBlocking {
+                            res = getListEclairageWithId(firebaseId)
                         }
                     }
-                    success = res
                 }
-            })
+                success = res
+                complete = true
+            }
+        })
+        while (!complete) {
+            // Task is running
         }
-        if (success)
-            return listSalles
+        return if (success)
+            listSalles
         else
-            return null
+            null
     }
 
     private fun getListEclairageWithId(salleFirebaseId: String): Boolean {
