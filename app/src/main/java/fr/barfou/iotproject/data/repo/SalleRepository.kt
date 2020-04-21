@@ -1,16 +1,96 @@
 package fr.barfou.iotproject.data.repo
 
+import android.util.Log
+import android.view.View
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import fr.barfou.iotproject.data.model.Eclairage
 import fr.barfou.iotproject.data.model.Salle
-import fr.barfou.iotproject.data.networking.HttpClientManager
-import fr.barfou.iotproject.data.networking.api.IotApi
-import fr.barfou.iotproject.data.networking.createApi
+import kotlinx.coroutines.runBlocking
 
 class SalleRepositoryImpl(
     //private val iotApi: IotApi
-): SalleRepository {
+) : SalleRepository {
 
-    override suspend fun getAllSalles(etablissement_id: Int): List<Salle> {
+    private val sallesRef = Firebase.database.reference.child("Salles")
+    val listSalles = mutableMapOf<String, Salle>()
+
+    override suspend fun retrieveSallesFromFirebase(etablissement_id: Int): Map<String, Salle>? {
+
+        var success = false
+        // Get Data once when opening the application
+        runBlocking {
+            sallesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("FirebaseError", error.message)
+                    success = false
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                    val taskMap = dataSnapshot.value as? HashMap<*, *>
+                    var res = true
+                    taskMap?.map { entry ->
+                        while (res) {
+                            val salle = entry.value as HashMap<*, *>
+                            val firebaseId = entry.key as String
+                            val etablissementId = salle["etablissement_id"] as Int
+                            val nom = salle["nom"] as String
+                            val presence = salle["presence"] as Boolean
+                            listSalles.put(
+                                firebaseId,
+                                Salle(etablissementId, firebaseId, nom, presence, emptyList())
+                            )
+                            runBlocking {
+                                res = getListEclairageWithId(firebaseId)
+                            }
+                        }
+                    }
+                    success = res
+                }
+            })
+        }
+        if (success)
+            return listSalles
+        else
+            return null
+    }
+
+    private fun getListEclairageWithId(salleFirebaseId: String): Boolean {
+
+        var success = false
+        val eclairageRef = sallesRef.child(salleFirebaseId).child("listEclairage")
+        eclairageRef.addListenerForSingleValueEvent(object : ValueEventListener {
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("FirebaseError", error.message)
+                success = false
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                val listEclairage = mutableListOf<Eclairage>()
+                val eclairageMap = dataSnapshot.value as HashMap<*, *>
+                eclairageMap.map { entry ->
+
+                    val firebaseId = entry.key as String
+                    val eclairage = entry.value as HashMap<*, *>
+                    val nom = eclairage["nom"] as String
+                    val allume = eclairage["allume"] as Boolean
+                    listEclairage.add(Eclairage(firebaseId, salleFirebaseId, nom, allume))
+                    if (listSalles.containsKey(salleFirebaseId))
+                        listSalles[salleFirebaseId]?.listEclairage = listEclairage
+                }
+                success = true
+            }
+        })
+        return success
+    }
+
+    /*override suspend fun getAllSalles(etablissement_id: Int): List<Salle> {
         // Test Values
         var listSalle = mutableListOf<Salle>()
         var listEclairage1 = mutableListOf<Eclairage>()
@@ -101,12 +181,12 @@ class SalleRepositoryImpl(
             )
         )
         return listSalle
-    }
+    }*/
 }
 
 interface SalleRepository {
 
-    suspend fun getAllSalles(etablissement_id: Int): List<Salle>
+    suspend fun retrieveSallesFromFirebase(etablissement_id: Int): Map<String, Salle>?
 
     companion object {
         val instance: SalleRepository by lazy {

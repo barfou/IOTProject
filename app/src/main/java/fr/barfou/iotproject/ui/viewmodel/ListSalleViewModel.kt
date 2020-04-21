@@ -13,7 +13,7 @@ open class ListSalleViewModel (
 
     fun getAllSalles(etablissement_id: Int, onSuccess: onSuccess<List<Salle>>) {
         viewModelScope.launch {
-            repository.getAllSalles(etablissement_id).run(onSuccess)
+            repository.retrieveSallesFromFirebase(etablissement_id).run(onSuccess)
         }
     }
 

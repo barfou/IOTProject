@@ -68,8 +68,4 @@ class ListSalleFragment : Fragment(),
             )
         findNavController().navigate(direction)
     }
-
-    companion object {
-        //
-    }
 }
