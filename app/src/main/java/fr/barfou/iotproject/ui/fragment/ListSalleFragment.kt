@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
@@ -55,8 +56,13 @@ class ListSalleFragment : Fragment(),
             if (itemDecorationCount == 0) addItemDecoration(SalleAdapter.OffsetDecoration())
         }
 
-        salleViewModel.getAllSalles(1) {
+        /*salleViewModel.getAllSalles(1) {
             salleAdapter.submitList(it)
+            salle_list_progress_bar.hide()
+        }*/
+
+        salleViewModel.initFirebase {
+            Toast.makeText(requireContext(), "Init Ok", Toast.LENGTH_LONG).show()
             salle_list_progress_bar.hide()
         }
     }

@@ -49,6 +49,6 @@ class DetailsSalleFragment : Fragment() {
             adapter = eclairageAdapter
             if (itemDecorationCount == 0) addItemDecoration(EclairageAdapter.OffsetDecoration())
         }
-        eclairageAdapter.submitList(salle.eclairage)
+        eclairageAdapter.submitList(salle.listEclairage)
     }
 }

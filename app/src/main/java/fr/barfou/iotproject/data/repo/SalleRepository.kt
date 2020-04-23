@@ -9,64 +9,75 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import fr.barfou.iotproject.data.model.Eclairage
 import fr.barfou.iotproject.data.model.Salle
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+import kotlin.random.Random
+import kotlin.random.Random.Default.nextBoolean
 
-class SalleRepositoryImpl(
-    //private val iotApi: IotApi
-) : SalleRepository {
+class SalleRepositoryImpl: SalleRepository {
 
-    private val sallesRef = Firebase.database.reference.child("Salles")
+    private val lesSallesRef = Firebase.database.reference.child("Salles")
     val listSalles = mutableMapOf<String, Salle>()
+    val nomSalles = listOf("Salle 2.02", "Salle 0.09", "Salle 0.08")
+    val nomEclairages = listOf("Classe", "Tableau")
 
     override suspend fun retrieveSallesFromFirebase(etablissement_id: Int): Map<String, Salle>? {
 
-        var success = false
-        var complete = false
-        // Get Data once when opening the application
-        sallesRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(error: DatabaseError) {
-                Log.d("FirebaseError", error.message)
-                success = false
-                complete = true
-            }
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-                val taskMap = dataSnapshot.value as? HashMap<*, *>
-                var res = true
-                taskMap?.map { entry ->
-                    while (res) {
-                        val salle = entry.value as HashMap<*, *>
-                        val firebaseId = entry.key as String
-                        val etablissementId = salle["etablissement_id"] as Int
-                        val nom = salle["nom"] as String
-                        val presence = salle["presence"] as Boolean
-                        listSalles.put(
-                            firebaseId,
-                            Salle(etablissementId, firebaseId, nom, presence, emptyList())
-                        )
-                        runBlocking {
-                            res = getListEclairageWithId(firebaseId)
-                        }
+        return withContext(Dispatchers.IO) {
+            try {
+                var success = false
+                var complete = false
+                // Get Data once when opening the application
+                lesSallesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d("FirebaseError", error.message)
+                        success = false
+                        complete = true
                     }
+
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                        val taskMap = dataSnapshot.value as? HashMap<*, *>
+                        var res = true
+                        taskMap?.map { entry ->
+                            while (res) {
+                                val salle = entry.value as HashMap<*, *>
+                                val firebaseId = entry.key as String
+                                val etablissementId = salle["etablissement_id"] as Int
+                                val nom = salle["nom"] as String
+                                val presence = salle["presence"] as Boolean
+                                listSalles.put(
+                                    firebaseId,
+                                    Salle(firebaseId, etablissementId, nom, presence, emptyList())
+                                )
+                                runBlocking {
+                                    res = getListEclairageWithId(firebaseId)
+                                }
+                            }
+                        }
+                        success = res
+                        complete = true
+                    }
+                })
+                while (!complete) {
+                    // Task is running
                 }
-                success = res
-                complete = true
+                if (success)
+                    return@withContext listSalles
+                else
+                    return@withContext null
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+                return@withContext null
             }
-        })
-        while (!complete) {
-            // Task is running
         }
-        return if (success)
-            listSalles
-        else
-            null
     }
 
     private fun getListEclairageWithId(salleFirebaseId: String): Boolean {
 
         var success = false
-        val eclairageRef = sallesRef.child(salleFirebaseId).child("listEclairage")
+        val eclairageRef = lesSallesRef.child(salleFirebaseId).child("listEclairage")
         eclairageRef.addListenerForSingleValueEvent(object : ValueEventListener {
 
             override fun onCancelled(error: DatabaseError) {
@@ -94,108 +105,42 @@ class SalleRepositoryImpl(
         return success
     }
 
-    /*override suspend fun getAllSalles(etablissement_id: Int): List<Salle> {
-        // Test Values
-        var listSalle = mutableListOf<Salle>()
-        var listEclairage1 = mutableListOf<Eclairage>()
-        listEclairage1.add(
-            Eclairage(
-                1,
-                1,
-                "Tableau",
-                false
-            )
-        )
-        listEclairage1.add(
-            Eclairage(
-                1,
-                1,
-                "Classe",
-                false
-            )
-        )
-        listSalle.add(
-            Salle(
-                etablissement_id = 1,
-                id = 1,
-                nom = "2.02",
-                presence = true,
-                eclairage = listEclairage1
-            )
-        )
-
-        var listEclairage2 = mutableListOf<Eclairage>()
-        listEclairage2.add(
-            Eclairage(
-                1,
-                1,
-                "Tableau",
-                true
-            )
-        )
-        listEclairage2.add(
-            Eclairage(
-                1,
-                1,
-                "Classe",
-                false
-            )
-        )
-        listSalle.add(
-            Salle(
-                etablissement_id = 1,
-                id = 2,
-                nom = "0.09",
-                presence = false,
-                eclairage = listEclairage2
-            )
-        )
-        var listEclairage3 = mutableListOf<Eclairage>()
-        listEclairage3.add(
-            Eclairage(
-                1,
-                1,
-                "Tableau",
-                true
-            )
-        )
-        listEclairage3.add(
-            Eclairage(
-                1,
-                1,
-                "Rangée 1",
-                true
-            )
-        )
-        listEclairage3.add(
-            Eclairage(
-                1,
-                1,
-                "Rangée 2",
-                true
-            )
-        )
-        listSalle.add(
-            Salle(
-                etablissement_id = 1,
-                id = 3,
-                nom = "0.08",
-                presence = true,
-                eclairage = listEclairage3
-            )
-        )
-        return listSalle
-    }*/
+    override suspend fun initFirebase(): Boolean {
+        return withContext(Dispatchers.IO) {
+            try {
+                for (salleName in nomSalles) {
+                    var idSalle = lesSallesRef.push().key!!
+                    val salle1 = Salle(idSalle, 1, salleName, nextBoolean(), emptyList())
+                    lesSallesRef.child(idSalle).setValue(salle1)
+                    for (eclairageName in nomEclairages) {
+                        val salleRef = lesSallesRef.child(idSalle).child("listEclairage")
+                        val idEclairage = salleRef.push().key!!
+                        val eclairage = Eclairage(
+                            idEclairage, idSalle,
+                            eclairageName,
+                            nextBoolean()
+                        )
+                        salleRef.child(idEclairage).setValue(eclairage)
+                    }
+                }
+                return@withContext true
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+                return@withContext false
+            }
+        }
+    }
 }
 
 interface SalleRepository {
 
     suspend fun retrieveSallesFromFirebase(etablissement_id: Int): Map<String, Salle>?
 
+    suspend fun initFirebase(): Boolean
+
     companion object {
         val instance: SalleRepository by lazy {
             SalleRepositoryImpl()
-            //SalleRepositoryImpl(HttpClientManager.instance.createApi())
         }
     }
 }
