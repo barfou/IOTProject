@@ -1,9 +1,10 @@
 package fr.barfou.iotproject.ui.fragment
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import fr.barfou.iotproject.R
@@ -18,6 +19,7 @@ class RoomDetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -36,10 +38,10 @@ class RoomDetailsFragment : Fragment() {
             this.setDisplayHomeAsUpEnabled(true)
         }
 
-        val salle = args.room
+        val room = args.room
 
-        holder_details_salle_nom.text = "Salle " + salle.name
-        when (salle.presence) {
+        holder_details_salle_nom.text = "Salle " + room.name
+        when (room.presence) {
             true -> holder_details_salle_presence.text = "Oui"
             false -> holder_details_salle_presence.text = "Non"
         }
@@ -49,6 +51,20 @@ class RoomDetailsFragment : Fragment() {
             adapter = lightingAdapter
             if (itemDecorationCount == 0) addItemDecoration(LightingAdapter.OffsetDecoration())
         }
-        lightingAdapter.submitList(salle.listLighting)
+        lightingAdapter.submitList(room.listLighting)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        if (args.room.isAlight() and !args.room.presence)
+            inflater.inflate(R.menu.menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.turn_off -> {
+                //
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

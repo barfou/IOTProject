@@ -56,7 +56,6 @@ class RoomListFragment : Fragment(),
         }
 
         roomListViewModel.retrieveData { roomList ->
-            Toast.makeText(requireContext(), "Init Ok", Toast.LENGTH_LONG).show()
             salle_list_progress_bar.hide()
             roomAdapter.submitList(roomList)
         }
