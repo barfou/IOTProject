@@ -10,26 +10,25 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import fr.barfou.iotproject.R
-import fr.barfou.iotproject.data.model.Salle
+import fr.barfou.iotproject.data.model.Room
 import fr.barfou.iotproject.ui.activity.MainActivity
-import fr.barfou.iotproject.ui.adapter.SalleAdapter
+import fr.barfou.iotproject.ui.adapter.RoomAdapter
 import fr.barfou.iotproject.ui.utils.hide
-import fr.barfou.iotproject.ui.viewmodel.ListSalleViewModel
-import fr.barfou.iotproject.ui.widget.viewholder.OnSalleClickListener
-import fr.barfou.iotproject.ui.fragment.ListSalleFragmentDirections
+import fr.barfou.iotproject.ui.viewmodel.RoomListViewModel
+import fr.barfou.iotproject.ui.widget.viewholder.OnRoomClickListener
 import kotlinx.android.synthetic.main.fragment_list_salle.*
 import kotlinx.android.synthetic.main.fragment_list_salle.view.*
 
-class ListSalleFragment : Fragment(),
-    OnSalleClickListener {
+class RoomListFragment : Fragment(),
+    OnRoomClickListener {
 
-    private lateinit var salleViewModel: ListSalleViewModel
-    private lateinit var salleAdapter: SalleAdapter
+    private lateinit var roomListViewModel: RoomListViewModel
+    private lateinit var roomAdapter: RoomAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        salleViewModel = ViewModelProvider(this,
-            ListSalleViewModel
+        roomListViewModel = ViewModelProvider(this,
+            RoomListViewModel
         ).get()
     }
 
@@ -49,24 +48,24 @@ class ListSalleFragment : Fragment(),
             this.setDisplayHomeAsUpEnabled(false)
         }
 
-        salleAdapter = SalleAdapter(this)
+        roomAdapter = RoomAdapter(this)
 
         view.salle_list_recycler_view.apply {
-            adapter = salleAdapter
-            if (itemDecorationCount == 0) addItemDecoration(SalleAdapter.OffsetDecoration())
+            adapter = roomAdapter
+            if (itemDecorationCount == 0) addItemDecoration(RoomAdapter.OffsetDecoration())
         }
 
-        salleViewModel.retrieveData { listSalle ->
+        roomListViewModel.retrieveData { roomList ->
             Toast.makeText(requireContext(), "Init Ok", Toast.LENGTH_LONG).show()
             salle_list_progress_bar.hide()
-            salleAdapter.submitList(listSalle)
+            roomAdapter.submitList(roomList)
         }
     }
 
-    override fun invoke(view: View, salle: Salle) {
+    override fun invoke(view: View, room: Room) {
         val direction =
-            ListSalleFragmentDirections.actionSalleListFragmentToSalleDetailsFragment(
-                salle
+            RoomListFragmentDirections.actionSalleListFragmentToSalleDetailsFragment(
+                room
             )
         findNavController().navigate(direction)
     }

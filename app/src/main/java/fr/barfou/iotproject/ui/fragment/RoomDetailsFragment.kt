@@ -8,13 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import fr.barfou.iotproject.R
 import fr.barfou.iotproject.ui.activity.MainActivity
-import fr.barfou.iotproject.ui.adapter.EclairageAdapter
+import fr.barfou.iotproject.ui.adapter.LightingAdapter
 import kotlinx.android.synthetic.main.fragment_details_salle.*
 
-class DetailsSalleFragment : Fragment() {
+class RoomDetailsFragment : Fragment() {
 
-    val args: DetailsSalleFragmentArgs by navArgs()
-    private lateinit var eclairageAdapter: EclairageAdapter
+    val args: RoomDetailsFragmentArgs by navArgs()
+    private lateinit var lightingAdapter: LightingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,19 +36,19 @@ class DetailsSalleFragment : Fragment() {
             this.setDisplayHomeAsUpEnabled(true)
         }
 
-        val salle = args.salle
+        val salle = args.room
 
-        holder_details_salle_nom.text = "Salle " + salle.nom
+        holder_details_salle_nom.text = "Salle " + salle.name
         when (salle.presence) {
             true -> holder_details_salle_presence.text = "Oui"
             false -> holder_details_salle_presence.text = "Non"
         }
 
-        eclairageAdapter = EclairageAdapter()
+        lightingAdapter = LightingAdapter()
         holder_details_recycler_view.apply {
-            adapter = eclairageAdapter
-            if (itemDecorationCount == 0) addItemDecoration(EclairageAdapter.OffsetDecoration())
+            adapter = lightingAdapter
+            if (itemDecorationCount == 0) addItemDecoration(LightingAdapter.OffsetDecoration())
         }
-        eclairageAdapter.submitList(salle.listEclairage)
+        lightingAdapter.submitList(salle.listLighting)
     }
 }

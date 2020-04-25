@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/salle_list_fragment"
-        android:name="fr.barfou.iotproject.ui.fragment.ListSalleFragment"
+        android:name="fr.barfou.iotproject.ui.fragment.RoomListFragment"
         android:label="salle_list_fragment"
         tools:layout="@layout/fragment_list_salle">
         <action
@@ -21,13 +21,13 @@
     </fragment>
     <fragment
         android:id="@+id/salle_details_fragment"
-        android:name="fr.barfou.iotproject.ui.fragment.DetailsSalleFragment"
+        android:name="fr.barfou.iotproject.ui.fragment.RoomDetailsFragment"
         android:label="fragment_details_salle"
         tools:layout="@layout/fragment_details_salle">
 
         <argument
-            android:name="salle"
-            app:argType="fr.barfou.iotproject.data.model.Salle" />
+            android:name="room"
+            app:argType="fr.barfou.iotproject.data.model.Room" />
 
     </fragment>
 

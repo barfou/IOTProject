@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import fr.barfou.iotproject.R
-import fr.barfou.iotproject.data.model.Salle
+import fr.barfou.iotproject.data.model.Room
 import fr.barfou.iotproject.ui.utils.invisible
 import fr.barfou.iotproject.ui.utils.show
 import kotlinx.android.synthetic.main.holder_salle.view.*
@@ -15,14 +15,14 @@ import kotlinx.android.synthetic.main.holder_salle.view.*
  *
  * This callback contains the view clicked, and the character attached to the view
  */
-typealias OnSalleClickListener = (view: View, salle: Salle) -> Unit
+typealias OnRoomClickListener = (view: View, room: Room) -> Unit
 
-class SalleViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class RoomViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    fun bind(model: Salle, onClick: OnSalleClickListener) {
+    fun bind(model: Room, onClick: OnRoomClickListener) {
         itemView.apply {
             this.setOnClickListener { onClick(it, model) }
-            this.holder_salle_nom.text = model.nom
+            this.holder_salle_nom.text = model.name
             if (model.presence) {
                 holder_salle_imgview_presence.show()
                 holder_salle_textview_presence.invisible()
@@ -40,15 +40,15 @@ class SalleViewHolder private constructor(itemView: View) : RecyclerView.ViewHol
 
     companion object {
         /**
-         * Create a new Instance of [SalleViewHolder]
+         * Create a new Instance of [RoomViewHolder]
          */
-        fun create(parent: ViewGroup): SalleViewHolder {
+        fun create(parent: ViewGroup): RoomViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(
                 R.layout.holder_salle,
                 parent,
                 false
             )
-            return SalleViewHolder(view)
+            return RoomViewHolder(view)
         }
     }
 }

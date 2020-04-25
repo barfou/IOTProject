@@ -4,31 +4,28 @@ import android.graphics.Rect
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import fr.barfou.iotproject.data.model.Salle
+import fr.barfou.iotproject.data.model.Lighting
 import fr.barfou.iotproject.ui.utils.dp
-import fr.barfou.iotproject.ui.widget.viewholder.OnSalleClickListener
-import fr.barfou.iotproject.ui.widget.viewholder.SalleViewHolder
+import fr.barfou.iotproject.ui.widget.viewholder.LightingViewHolder
 
-class SalleAdapter(
-    private val onSalleClickListener: OnSalleClickListener
-) : RecyclerView.Adapter<SalleViewHolder>() {
+class LightingAdapter() : RecyclerView.Adapter<LightingViewHolder>() {
 
-    private var _data = emptyList<Salle>()
+    private var _data = emptyList<Lighting>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SalleViewHolder {
-        return SalleViewHolder.create(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LightingViewHolder {
+        return LightingViewHolder.create(parent)
     }
 
     override fun getItemCount(): Int = _data.count()
 
-    override fun onBindViewHolder(holder: SalleViewHolder, position: Int) {
-        holder.bind(_data[position], onSalleClickListener)
+    override fun onBindViewHolder(holder: LightingViewHolder, position: Int) {
+        holder.bind(_data[position])
     }
 
     /**
      * Set new data in the list and refresh it
      */
-    fun submitList(data: List<Salle>) {
+    fun submitList(data: List<Lighting>) {
         _data = data
         notifyDataSetChanged()
     }
@@ -46,13 +43,12 @@ class SalleAdapter(
             super.getItemOffsets(outRect, view, parent, state)
             parent.run {
                 outRect.set(
-                    dp(16),
-                    dp(4),
-                    dp(16),
-                    dp(4)
+                    dp(0),
+                    dp(1),
+                    dp(0),
+                    dp(1)
                 )
             }
-
         }
     }
 }

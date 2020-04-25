@@ -3,15 +3,15 @@ package fr.barfou.iotproject.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import fr.barfou.iotproject.data.model.Salle
-import fr.barfou.iotproject.data.repo.SalleRepository
+import fr.barfou.iotproject.data.model.Room
+import fr.barfou.iotproject.data.repo.RoomRepository
 import kotlinx.coroutines.launch
 
-open class ListSalleViewModel (
-    private val repository: SalleRepository
+open class RoomListViewModel (
+    private val repository: RoomRepository
 ): ViewModel() {
 
-    fun retrieveData(onSuccess: onSuccess<List<Salle>>) {
+    fun retrieveData(onSuccess: onSuccess<List<Room>>) {
         viewModelScope.launch {
             repository.retrieveDataFromFirebase { res ->
                 res?.run(onSuccess)
@@ -22,8 +22,8 @@ open class ListSalleViewModel (
     companion object Factory: ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return ListSalleViewModel(
-                SalleRepository.instance
+            return RoomListViewModel(
+                RoomRepository.instance
             ) as T
         }
     }
