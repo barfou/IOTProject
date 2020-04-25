@@ -54,7 +54,7 @@ class RoomRepositoryImpl : RoomRepository {
             taskMap.map { entry ->
                 val room = entry.value as HashMap<*, *>
                 val firebaseId = entry.key as String
-                val nom = room["nom"] as String
+                val nom = room["name"] as String
                 val presence = room["presence"] as Boolean
                 val newRoom = Room(firebaseId, nom, presence, mutableListOf())
                 roomsList.add(newRoom)
