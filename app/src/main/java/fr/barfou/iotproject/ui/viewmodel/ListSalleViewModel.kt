@@ -11,15 +11,11 @@ open class ListSalleViewModel (
     private val repository: SalleRepository
 ): ViewModel() {
 
-    fun getAllSalles(etablissement_id: Int, onSuccess: onSuccess<Map<String, Salle>>) {
+    fun retrieveData(onSuccess: onSuccess<List<Salle>>) {
         viewModelScope.launch {
-            repository.retrieveSallesFromFirebase(etablissement_id)?.run(onSuccess)
-        }
-    }
-
-    fun initFirebase(onSuccess: onSuccess<Boolean>) {
-        viewModelScope.launch {
-            repository.initFirebase().run(onSuccess)
+            repository.retrieveDataFromFirebase { res ->
+                res?.run(onSuccess)
+            }
         }
     }
 

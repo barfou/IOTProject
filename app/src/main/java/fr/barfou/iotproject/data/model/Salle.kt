@@ -9,10 +9,9 @@ import java.io.Serializable
 data class Salle(
     @set:Exclude @get:Exclude
     var firebaseId: String,
-    var etablissement_id: Int,
     var nom: String?,
     var presence: Boolean,
-    var listEclairage: List<Eclairage>
+    var listEclairage: MutableList<Eclairage>
 ) : Serializable {
 
     fun isAlight(): Boolean = listEclairage.filter { it.allume }.isNotEmpty()

@@ -56,14 +56,10 @@ class ListSalleFragment : Fragment(),
             if (itemDecorationCount == 0) addItemDecoration(SalleAdapter.OffsetDecoration())
         }
 
-        /*salleViewModel.getAllSalles(1) {
-            salleAdapter.submitList(it)
-            salle_list_progress_bar.hide()
-        }*/
-
-        salleViewModel.initFirebase {
+        salleViewModel.retrieveData { listSalle ->
             Toast.makeText(requireContext(), "Init Ok", Toast.LENGTH_LONG).show()
             salle_list_progress_bar.hide()
+            salleAdapter.submitList(listSalle)
         }
     }
 
