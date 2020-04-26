@@ -19,9 +19,9 @@ open class RoomListViewModel (
         }
     }
 
-    fun turnOffTheLight(roomId: String, onSuccess: onSuccess<Boolean>) {
+    fun turnOffTheLight(roomId: String, onSuccess: onSuccess<Room>) {
         viewModelScope.launch {
-            repository.turnOffTheLight(roomId).run(onSuccess)
+            repository.turnOffTheLight(roomId)?.run(onSuccess)
         }
     }
 

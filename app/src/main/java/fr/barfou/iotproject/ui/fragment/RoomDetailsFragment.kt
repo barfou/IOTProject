@@ -1,5 +1,6 @@
 package fr.barfou.iotproject.ui.fragment
 
+import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
@@ -69,11 +70,8 @@ class RoomDetailsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.turn_off -> {
-                roomListViewModel.turnOffTheLight(args.room.firebaseId) { res ->
-                    if (res)
-                        Toast.makeText(this.requireContext(), "Update Ok", Toast.LENGTH_SHORT).show()
-                    else
-                        Toast.makeText(this.requireContext(), "Update Fail", Toast.LENGTH_SHORT).show()
+                roomListViewModel.turnOffTheLight(args.room.firebaseId) { updatedRoom ->
+                    lightingAdapter.submitList(updatedRoom.listLighting)
                 }
             }
         }

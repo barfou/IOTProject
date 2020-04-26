@@ -21,7 +21,7 @@ class RoomRepositoryImpl : RoomRepository {
     private val roomsId = listOf("Rm202", "Rm009", "Rm008")
     private val lightingNames = listOf("Classe", "Tableau")
 
-    override suspend fun turnOffTheLight(roomId: String): Boolean {
+    override suspend fun turnOffTheLight(roomId: String): Room? {
         return withContext(Dispatchers.IO) {
             try {
                 val position = roomId.indexOf(roomId)
@@ -29,10 +29,10 @@ class RoomRepositoryImpl : RoomRepository {
                 updatedRoom.switchOffTheLight()
                 roomsRef.child(roomId).setValue(updatedRoom)
                 roomsList[position] = updatedRoom
-                return@withContext true
+                return@withContext updatedRoom
             } catch (e: Exception) {
                 e.printStackTrace()
-                return@withContext false
+                return@withContext null
             }
         }
     }
@@ -148,7 +148,7 @@ interface RoomRepository {
 
     suspend fun retrieveDataFromFirebase(onSuccess: onSuccess<List<Room>?>)
 
-    suspend fun turnOffTheLight(roomId: String): Boolean
+    suspend fun turnOffTheLight(roomId: String): Room?
 
     companion object {
         val instance: RoomRepository by lazy {
