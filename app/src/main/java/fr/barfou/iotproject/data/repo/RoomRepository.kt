@@ -16,7 +16,7 @@ class RoomRepositoryImpl : RoomRepository {
 
     private val roomsRef = Firebase.database.reference.child("Rooms")
     val roomsList = mutableListOf<Room>()
-    private val roomsNames = listOf("Salle 2.02", "Salle 0.09", "Salle 0.08")
+    private val roomsId = listOf("Rm202", "Rm009", "Rm008")
     private val lightingNames = listOf("Classe", "Tableau")
 
     override suspend fun retrieveDataFromFirebase(onSuccess: onSuccess<List<Room>?>) {
@@ -98,18 +98,19 @@ class RoomRepositoryImpl : RoomRepository {
 
     private fun initData(): List<Room> {
         try {
-            roomsNames.forEachIndexed { index, element ->
-                val roomId = roomsRef.push().key!!
+            roomsId.forEachIndexed { index, id ->
+                var roomName = id.replace("Rm","Salle ")
+                roomName = roomName.substring(0, 7) + "." + roomName.substring(7, roomName.length);
                 val newRoom = Room(
-                    roomId, element, nextBoolean(), mutableListOf()
+                    id, roomName, nextBoolean(), mutableListOf()
                 )
                 roomsList.add(newRoom)
-                roomsRef.child(roomId).setValue(newRoom)
+                roomsRef.child(id).setValue(newRoom)
                 for (name in lightingNames) {
-                    val lightingRef = roomsRef.child(roomId).child("listLighting")
+                    val lightingRef = roomsRef.child(id).child("listLighting")
                     val lightId = lightingRef.push().key!!
                     val lighting = Lighting(
-                        lightId, roomId,
+                        lightId, id,
                         name,
                         nextBoolean()
                     )
