@@ -1,6 +1,7 @@
 package fr.barfou.iotproject.data.repo
 
 import android.util.Log
+import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -49,7 +50,6 @@ class RoomRepositoryImpl : RoomRepository {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     try {
-
                         val taskMap = dataSnapshot.value as? HashMap<*, *>
                         if (taskMap.isNullOrEmpty())
                             initData().run(onSuccess)
@@ -69,14 +69,19 @@ class RoomRepositoryImpl : RoomRepository {
 
     private fun retrieveData(taskMap: HashMap<*, *>) {
         try {
+            var temp = mutableListOf<Room>()
             taskMap.map { entry ->
                 val room = entry.value as HashMap<*, *>
                 val firebaseId = entry.key as String
                 val nom = room["name"] as String
                 val presence = room["presence"] as Boolean
                 val newRoom = Room(firebaseId, nom, presence, mutableListOf())
-                roomsList.add(newRoom)
+                if (firebaseId == roomsId[0])
+                    roomsList.add(newRoom)
+                else
+                    temp.add(newRoom)
             }
+            roomsList.addAll(temp)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -117,7 +122,7 @@ class RoomRepositoryImpl : RoomRepository {
     private fun initData(): List<Room> {
         try {
             roomsId.forEachIndexed { index, id ->
-                var roomName = id.replace("Rm","Salle ")
+                var roomName = id.replace("Rm", "Salle ")
                 roomName = roomName.substring(0, 7) + "." + roomName.substring(7, roomName.length);
                 val newRoom = Room(
                     id, roomName, nextBoolean(), mutableListOf()
@@ -142,6 +147,56 @@ class RoomRepositoryImpl : RoomRepository {
             return emptyList()
         }
     }
+
+    override suspend fun observeChangeOnRoom202(onSuccess: onSuccess<Boolean>) {
+
+        //val room202Ref = roomsRef.child(roomsId[0])
+
+        roomsRef.addChildEventListener(object : ChildEventListener {
+
+            override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
+                val room = dataSnapshot.value as HashMap<*, *>
+                val presence = room["presence"] as Boolean
+                val firebaseId = dataSnapshot.key as String
+                roomsList[0].presence = presence
+                if (firebaseId == roomsId[0])
+                    onSuccess(presence)
+            }
+
+            override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildRemoved(dataSnapshot: DataSnapshot) {}
+            override fun onChildMoved(dataSnapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+    }
+
+    override suspend fun observeChangeOnNestedDataRoom202(onSuccess: onSuccess<MutableList<Lighting>>) {
+
+        val lightingRef = roomsRef.child(roomsId[0]).child("listLighting")
+
+        lightingRef.addChildEventListener(object : ChildEventListener {
+
+            override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
+
+                val listLighting = mutableListOf<Lighting>()
+                val lightingMap = dataSnapshot.value as HashMap<*, *>
+                lightingMap.map { entry ->
+                    val firebaseId = entry.key as String
+                    val lighting = entry.value as HashMap<*, *>
+                    val name = lighting["name"] as String
+                    val turnedOn = lighting["turnedOn"] as Boolean
+                    listLighting.add(Lighting(firebaseId, roomsId[0], name, turnedOn))
+                }
+                roomsList[0].listLighting = listLighting
+                onSuccess(listLighting)
+            }
+
+            override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildRemoved(dataSnapshot: DataSnapshot) {}
+            override fun onChildMoved(dataSnapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+    }
 }
 
 interface RoomRepository {
@@ -149,6 +204,10 @@ interface RoomRepository {
     suspend fun retrieveDataFromFirebase(onSuccess: onSuccess<List<Room>?>)
 
     suspend fun turnOffTheLight(roomId: String): Room?
+
+    suspend fun observeChangeOnRoom202(onSuccess: onSuccess<Boolean>)
+
+    suspend fun observeChangeOnNestedDataRoom202(onSuccess: onSuccess<MutableList<Lighting>>)
 
     companion object {
         val instance: RoomRepository by lazy {
