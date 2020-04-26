@@ -19,6 +19,12 @@ open class RoomListViewModel (
         }
     }
 
+    fun turnOffTheLight(roomId: String, onSuccess: onSuccess<Boolean>) {
+        viewModelScope.launch {
+            repository.turnOffTheLight(roomId).run(onSuccess)
+        }
+    }
+
     companion object Factory: ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

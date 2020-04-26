@@ -12,4 +12,10 @@ data class Room(
 ) : Serializable {
 
     fun isAlight(): Boolean = listLighting.filter { it.turnedOn }.isNotEmpty()
+
+    fun switchOffTheLight() {
+        listLighting.forEach {
+            it.turnedOn = false
+        }
+    }
 }

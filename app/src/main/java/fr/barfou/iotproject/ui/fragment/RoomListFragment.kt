@@ -26,7 +26,7 @@ class RoomListFragment : Fragment(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        roomListViewModel = ViewModelProvider(this,
+        roomListViewModel = ViewModelProvider(this.requireActivity(),
             RoomListViewModel
         ).get()
     }

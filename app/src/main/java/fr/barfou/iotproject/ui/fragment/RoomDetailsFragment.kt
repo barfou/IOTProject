@@ -4,21 +4,28 @@ import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.get
 import androidx.navigation.fragment.navArgs
 import fr.barfou.iotproject.R
 import fr.barfou.iotproject.ui.activity.MainActivity
 import fr.barfou.iotproject.ui.adapter.LightingAdapter
+import fr.barfou.iotproject.ui.viewmodel.RoomListViewModel
 import kotlinx.android.synthetic.main.fragment_details_salle.*
 
 class RoomDetailsFragment : Fragment() {
 
     val args: RoomDetailsFragmentArgs by navArgs()
     private lateinit var lightingAdapter: LightingAdapter
+    private lateinit var roomListViewModel: RoomListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        roomListViewModel = ViewModelProvider(this.requireActivity(), RoomListViewModel).get()
         setHasOptionsMenu(true)
     }
 
@@ -62,7 +69,12 @@ class RoomDetailsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.turn_off -> {
-                //
+                roomListViewModel.turnOffTheLight(args.room.firebaseId) { res ->
+                    if (res)
+                        Toast.makeText(this.requireContext(), "Update Ok", Toast.LENGTH_SHORT).show()
+                    else
+                        Toast.makeText(this.requireContext(), "Update Fail", Toast.LENGTH_SHORT).show()
+                }
             }
         }
         return super.onOptionsItemSelected(item)

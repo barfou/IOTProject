@@ -10,6 +10,8 @@ import fr.barfou.iotproject.data.model.Lighting
 import fr.barfou.iotproject.data.model.Room
 import fr.barfou.iotproject.ui.viewmodel.onFinish
 import fr.barfou.iotproject.ui.viewmodel.onSuccess
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlin.random.Random.Default.nextBoolean
 
 class RoomRepositoryImpl : RoomRepository {
@@ -18,6 +20,22 @@ class RoomRepositoryImpl : RoomRepository {
     val roomsList = mutableListOf<Room>()
     private val roomsId = listOf("Rm202", "Rm009", "Rm008")
     private val lightingNames = listOf("Classe", "Tableau")
+
+    override suspend fun turnOffTheLight(roomId: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            try {
+                val position = roomId.indexOf(roomId)
+                val updatedRoom = roomsList[position]
+                updatedRoom.switchOffTheLight()
+                roomsRef.child(roomId).setValue(updatedRoom)
+                roomsList[position] = updatedRoom
+                return@withContext true
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return@withContext false
+            }
+        }
+    }
 
     override suspend fun retrieveDataFromFirebase(onSuccess: onSuccess<List<Room>?>) {
 
@@ -129,6 +147,8 @@ class RoomRepositoryImpl : RoomRepository {
 interface RoomRepository {
 
     suspend fun retrieveDataFromFirebase(onSuccess: onSuccess<List<Room>?>)
+
+    suspend fun turnOffTheLight(roomId: String): Boolean
 
     companion object {
         val instance: RoomRepository by lazy {
