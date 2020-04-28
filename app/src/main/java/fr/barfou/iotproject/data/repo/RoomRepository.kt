@@ -53,10 +53,7 @@ class RoomRepositoryImpl : RoomRepository {
                         if (taskMap.isNullOrEmpty())
                             initData().run(onSuccess)
                         else {
-                            retrieveData(taskMap)
-                            retrieveNestedData {
-                                onSuccess(roomsList)
-                            }
+                            retrieveData(taskMap)?.run(onSuccess)
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -66,7 +63,7 @@ class RoomRepositoryImpl : RoomRepository {
         }
     }
 
-    private fun retrieveData(taskMap: HashMap<*, *>) {
+    private fun retrieveData(taskMap: HashMap<*, *>): List<Room>? {
         try {
             var temp = mutableListOf<Room>()
             taskMap.map { entry ->
@@ -74,47 +71,30 @@ class RoomRepositoryImpl : RoomRepository {
                 val firebaseId = entry.key as String
                 val nom = room["name"] as String
                 val presence = room["presence"] as Boolean
-                val newRoom = Room(firebaseId, nom, presence, mutableListOf())
+
+                // Retrieve nested data
+                val listLightingRef = room["listLighting"] as HashMap<*,*>
+                val listLighting = mutableListOf<Lighting>()
+                listLightingRef.map { lightingEntry ->
+                    val lightingFirebaseId = lightingEntry.key as String
+                    val lighting = lightingEntry.value as HashMap<*, *>
+                    val lightingName = lighting["name"] as String
+                    val turnedOn = lighting["turnedOn"] as Boolean
+                    listLighting.add(Lighting(lightingFirebaseId, firebaseId, lightingName, turnedOn))
+                }
+
+                // Build the list
+                val newRoom = Room(firebaseId, nom, presence, listLighting)
                 if (firebaseId == roomsId[0])
                     roomsList.add(newRoom)
                 else
                     temp.add(newRoom)
             }
             roomsList.addAll(temp)
+            return roomsList
         } catch (e: Exception) {
             e.printStackTrace()
-        }
-    }
-
-    private fun retrieveNestedData(onFinish: onFinish) {
-        try {
-            roomsList.forEachIndexed { index, room ->
-
-                val lightingRef = roomsRef.child(room.firebaseId).child("listLighting")
-                lightingRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.d("FirebaseError", error.message)
-                    }
-
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-                        val listLighting = mutableListOf<Lighting>()
-                        val lightingMap = dataSnapshot.value as HashMap<*, *>
-                        lightingMap.map { entry ->
-                            val firebaseId = entry.key as String
-                            val lighting = entry.value as HashMap<*, *>
-                            val name = lighting["name"] as String
-                            val turnedOn = lighting["turnedOn"] as Boolean
-                            listLighting.add(Lighting(firebaseId, room.firebaseId, name, turnedOn))
-                        }
-                        roomsList[index].listLighting = listLighting
-                        if (index == roomsList.size - 1)
-                            onFinish()
-                    }
-                })
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
+            return null
         }
     }
 
@@ -158,7 +138,8 @@ class RoomRepositoryImpl : RoomRepository {
                 val firebaseId = dataSnapshot.key as String
                 val name = room["name"] as String
                 val presence = room["presence"] as Boolean
-                //
+
+                // Retrieve nested data
                 val listLightingRef = room["listLighting"] as HashMap<*,*>
                 val listLighting = mutableListOf<Lighting>()
                 listLightingRef.map { entry ->
@@ -168,6 +149,8 @@ class RoomRepositoryImpl : RoomRepository {
                     val turnedOn = lighting["turnedOn"] as Boolean
                     listLighting.add(Lighting(lightingFirebaseId, firebaseId, lightingName, turnedOn))
                 }
+
+                // Build new instance and send updated value
                 val updatedRoom = Room(firebaseId, name, presence, listLighting)
                 val position = roomsId.indexOf(firebaseId)
                 roomsList[position] = updatedRoom

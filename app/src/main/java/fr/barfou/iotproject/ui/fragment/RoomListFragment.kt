@@ -65,27 +65,9 @@ class RoomListFragment : Fragment(),
             roomListViewModel.observePresenceChangesRoom202 { updatedRoom ->
                 roomAdapter.updateRoom202(updatedRoom)
             }
-            /*.observeAlightChangesRoom202 { listLighting ->
-                roomAdapter.updateLightsRoom202(listLighting)
-            }*/
         }
 
         btnTest.setOnClickListener {
-
-            /*val lightingNames = listOf("Classe", "Tableau")
-            val roomsRef = Firebase.database.reference.child("Rooms")
-            val updatedRoom = Room("Rm202", "Salle 2.02", false, mutableListOf())
-            roomsRef.child("Rm202").setValue(updatedRoom)
-            for (name in lightingNames) {
-                val lightingRef = roomsRef.child("Rm202").child("listLighting")
-                val lightId = lightingRef.push().key!!
-                val lighting = Lighting(
-                    lightId, "Rm202",
-                    name,
-                    false
-                )
-                lightingRef.child(lightId).setValue(lighting)
-            }*/
 
             val presence = false
             val turnedOn = true
