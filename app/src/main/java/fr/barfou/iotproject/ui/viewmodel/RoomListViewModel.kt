@@ -26,7 +26,7 @@ open class RoomListViewModel (
         }
     }
 
-    fun observePresenceChangesRoom202(onPresenceChanged: onSuccess<Boolean>) {
+    fun observePresenceChangesRoom202(onPresenceChanged: onSuccess<Room>) {
         viewModelScope.launch {
             repository.observeChangeOnRoom202 {
                 onPresenceChanged(it)
@@ -34,13 +34,13 @@ open class RoomListViewModel (
         }
     }
 
-    fun observeAlightChangesRoom202(onAlightChange: onSuccess<MutableList<Lighting>>) {
+    /*fun observeAlightChangesRoom202(onAlightChange: onSuccess<MutableList<Lighting>>) {
         viewModelScope.launch {
             repository.observeChangeOnNestedDataRoom202 {
                 onAlightChange(it)
             }
         }
-    }
+    }*/
 
     companion object Factory: ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")

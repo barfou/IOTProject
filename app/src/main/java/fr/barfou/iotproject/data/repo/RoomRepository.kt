@@ -20,17 +20,16 @@ class RoomRepositoryImpl : RoomRepository {
     private val roomsRef = Firebase.database.reference.child("Rooms")
     val roomsList = mutableListOf<Room>()
     private val roomsId = listOf("Rm202", "Rm009", "Rm008")
-    private val lightingNames = listOf("Classe", "Tableau")
+    private val lightingId = listOf("Classe", "Tableau")
 
     override suspend fun turnOffTheLight(roomId: String): Room? {
         return withContext(Dispatchers.IO) {
             try {
                 val position = roomId.indexOf(roomId)
-                val updatedRoom = roomsList[position]
-                updatedRoom.switchOffTheLight()
-                roomsRef.child(roomId).setValue(updatedRoom)
-                roomsList[position] = updatedRoom
-                return@withContext updatedRoom
+                roomsRef.child(roomId).child("listLighting").child(lightingId[0]).child("turnedOn").setValue(false)
+                roomsRef.child(roomId).child("listLighting").child(lightingId[1]).child("turnedOn").setValue(false)
+                roomsList[position].switchOffTheLight()
+                return@withContext roomsList[position]
             } catch (e: Exception) {
                 e.printStackTrace()
                 return@withContext null
@@ -121,20 +120,21 @@ class RoomRepositoryImpl : RoomRepository {
 
     private fun initData(): List<Room> {
         try {
-            roomsId.forEachIndexed { index, id ->
-                var roomName = id.replace("Rm", "Salle ")
+            roomsId.forEachIndexed { index, roomId ->
+                var roomName = roomId.replace("Rm", "Salle ")
                 roomName = roomName.substring(0, 7) + "." + roomName.substring(7, roomName.length);
                 val newRoom = Room(
-                    id, roomName, nextBoolean(), mutableListOf()
+                    roomId, roomName, nextBoolean(), mutableListOf()
                 )
                 roomsList.add(newRoom)
-                roomsRef.child(id).setValue(newRoom)
-                for (name in lightingNames) {
-                    val lightingRef = roomsRef.child(id).child("listLighting")
-                    val lightId = lightingRef.push().key!!
+                roomsRef.child(roomId).setValue(newRoom)
+                for (lightId in lightingId) {
+                    val lightingRef = roomsRef.child(roomId).child("listLighting")
+                    //val lightId = lightingRef.push().key!!
                     val lighting = Lighting(
-                        lightId, id,
-                        name,
+                        lightId,
+                        roomId,
+                        lightId,
                         nextBoolean()
                     )
                     lightingRef.child(lightId).setValue(lighting)
@@ -148,47 +148,30 @@ class RoomRepositoryImpl : RoomRepository {
         }
     }
 
-    override suspend fun observeChangeOnRoom202(onSuccess: onSuccess<Boolean>) {
-
-        //val room202Ref = roomsRef.child(roomsId[0])
+    override suspend fun observeChangeOnRoom202(onSuccess: onSuccess<Room>) {
 
         roomsRef.addChildEventListener(object : ChildEventListener {
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
+
                 val room = dataSnapshot.value as HashMap<*, *>
-                val presence = room["presence"] as Boolean
                 val firebaseId = dataSnapshot.key as String
-                roomsList[0].presence = presence
-                if (firebaseId == roomsId[0])
-                    onSuccess(presence)
-            }
-
-            override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {}
-            override fun onChildRemoved(dataSnapshot: DataSnapshot) {}
-            override fun onChildMoved(dataSnapshot: DataSnapshot, previousChildName: String?) {}
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-    }
-
-    override suspend fun observeChangeOnNestedDataRoom202(onSuccess: onSuccess<MutableList<Lighting>>) {
-
-        val lightingRef = roomsRef.child(roomsId[0]).child("listLighting")
-
-        lightingRef.addChildEventListener(object : ChildEventListener {
-
-            override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
-
+                val name = room["name"] as String
+                val presence = room["presence"] as Boolean
+                //
+                val listLightingRef = room["listLighting"] as HashMap<*,*>
                 val listLighting = mutableListOf<Lighting>()
-                val lightingMap = dataSnapshot.value as HashMap<*, *>
-                lightingMap.map { entry ->
-                    val firebaseId = entry.key as String
+                listLightingRef.map { entry ->
+                    val lightingFirebaseId = entry.key as String
                     val lighting = entry.value as HashMap<*, *>
-                    val name = lighting["name"] as String
+                    val lightingName = lighting["name"] as String
                     val turnedOn = lighting["turnedOn"] as Boolean
-                    listLighting.add(Lighting(firebaseId, roomsId[0], name, turnedOn))
+                    listLighting.add(Lighting(lightingFirebaseId, firebaseId, lightingName, turnedOn))
                 }
-                roomsList[0].listLighting = listLighting
-                onSuccess(listLighting)
+                val updatedRoom = Room(firebaseId, name, presence, listLighting)
+                val position = roomsId.indexOf(firebaseId)
+                roomsList[position] = updatedRoom
+                onSuccess(updatedRoom)
             }
 
             override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {}
@@ -205,9 +188,7 @@ interface RoomRepository {
 
     suspend fun turnOffTheLight(roomId: String): Room?
 
-    suspend fun observeChangeOnRoom202(onSuccess: onSuccess<Boolean>)
-
-    suspend fun observeChangeOnNestedDataRoom202(onSuccess: onSuccess<MutableList<Lighting>>)
+    suspend fun observeChangeOnRoom202(onSuccess: onSuccess<Room>)
 
     companion object {
         val instance: RoomRepository by lazy {

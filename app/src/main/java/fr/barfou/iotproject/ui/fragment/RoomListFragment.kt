@@ -20,7 +20,6 @@ import fr.barfou.iotproject.ui.viewmodel.RoomListViewModel
 import fr.barfou.iotproject.ui.widget.viewholder.OnRoomClickListener
 import kotlinx.android.synthetic.main.fragment_list_salle.*
 import kotlinx.android.synthetic.main.fragment_list_salle.view.*
-import kotlin.random.Random
 
 class RoomListFragment : Fragment(),
     OnRoomClickListener {
@@ -63,19 +62,19 @@ class RoomListFragment : Fragment(),
             roomAdapter.submitList(roomList)
 
             // Observe Changes Here
-            roomListViewModel.observePresenceChangesRoom202 { presence ->
-                roomAdapter.update202Presence(presence)
+            roomListViewModel.observePresenceChangesRoom202 { updatedRoom ->
+                roomAdapter.updateRoom202(updatedRoom)
             }
-            roomListViewModel.observeAlightChangesRoom202 { listLighting ->
+            /*.observeAlightChangesRoom202 { listLighting ->
                 roomAdapter.updateLightsRoom202(listLighting)
-            }
+            }*/
         }
 
         btnTest.setOnClickListener {
 
-            val lightingNames = listOf("Classe", "Tableau")
+            /*val lightingNames = listOf("Classe", "Tableau")
             val roomsRef = Firebase.database.reference.child("Rooms")
-            val updatedRoom = Room("Rm202", "Salle 2.02", true, mutableListOf())
+            val updatedRoom = Room("Rm202", "Salle 2.02", false, mutableListOf())
             roomsRef.child("Rm202").setValue(updatedRoom)
             for (name in lightingNames) {
                 val lightingRef = roomsRef.child("Rm202").child("listLighting")
@@ -86,7 +85,17 @@ class RoomListFragment : Fragment(),
                     false
                 )
                 lightingRef.child(lightId).setValue(lighting)
-            }
+            }*/
+
+            val presence = false
+            val turnedOn = true
+            val lightingNames = listOf("Classe", "Tableau")
+            val roomsRef = Firebase.database.reference.child("Rooms")
+            roomsRef.child("Rm202").child("presence").setValue(presence)
+            val updatedLight = Lighting("Classe", "Rm2.02", "Classe", turnedOn)
+            roomsRef.child("Rm202").child("listLighting").child(lightingNames[0]).setValue(updatedLight)
+            val updatedLight2 = Lighting("Tableau", "Rm2.02", "Tableau", turnedOn)
+            roomsRef.child("Rm202").child("listLighting").child(lightingNames[1]).setValue(updatedLight2)
         }
     }
 

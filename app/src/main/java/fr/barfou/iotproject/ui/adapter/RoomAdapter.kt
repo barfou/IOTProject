@@ -34,14 +34,9 @@ class RoomAdapter(
         notifyDataSetChanged()
     }
 
-    fun update202Presence(presence: Boolean) {
-
-        _data[0].presence = presence
-        notifyItemChanged(0)
-    }
-
-    fun updateLightsRoom202(listLighting: MutableList<Lighting>) {
-        _data[0].listLighting = listLighting
+    fun updateRoom202(updatedRoom: Room) {
+        _data[0].presence = updatedRoom.presence
+        _data[0].listLighting = updatedRoom.listLighting
         notifyItemChanged(0)
     }
 
