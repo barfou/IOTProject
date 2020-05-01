@@ -68,7 +68,7 @@ class RoomDetailsFragment : Fragment() {
             roomListViewModel.observePresenceChangesRoom202 { updatedRoom ->
                 updatePresence(updatedRoom.presence)
                 lightingAdapter.submitList(updatedRoom.listLighting)
-                menuItem.isVisible = !args.room.presence and args.room.isAlight()
+                menuItem.isVisible = !updatedRoom.presence and updatedRoom.isAlight()
             }
         }
     }
