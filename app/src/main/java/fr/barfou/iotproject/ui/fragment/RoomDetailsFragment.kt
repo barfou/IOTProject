@@ -1,15 +1,9 @@
 package fr.barfou.iotproject.ui.fragment
 
-import android.app.AlertDialog
-import android.app.SearchManager
-import android.content.Context
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.get
 import androidx.navigation.fragment.navArgs
 import fr.barfou.iotproject.R
@@ -23,6 +17,7 @@ class RoomDetailsFragment : Fragment() {
     val args: RoomDetailsFragmentArgs by navArgs()
     private lateinit var lightingAdapter: LightingAdapter
     private lateinit var roomListViewModel: RoomListViewModel
+    private lateinit var menuItem: MenuItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,8 +46,9 @@ class RoomDetailsFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (args.room.isAlight() and !args.room.presence)
-            inflater.inflate(R.menu.menu, menu)
+        inflater.inflate(R.menu.menu, menu)
+        menuItem = menu.findItem(R.id.turn_off)
+        menuItem.isVisible = !args.room.presence and args.room.isAlight()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -60,6 +56,7 @@ class RoomDetailsFragment : Fragment() {
             R.id.turn_off -> {
                 roomListViewModel.turnOffTheLight(args.room.firebaseId) { updatedRoom ->
                     lightingAdapter.submitList(updatedRoom.listLighting)
+                    menuItem.isVisible = false
                 }
             }
         }
@@ -71,6 +68,7 @@ class RoomDetailsFragment : Fragment() {
             roomListViewModel.observePresenceChangesRoom202 { updatedRoom ->
                 updatePresence(updatedRoom.presence)
                 lightingAdapter.submitList(updatedRoom.listLighting)
+                menuItem.isVisible = !args.room.presence and args.room.isAlight()
             }
         }
     }
