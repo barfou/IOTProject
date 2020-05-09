@@ -4,7 +4,6 @@ import android.graphics.Rect
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import fr.barfou.iotproject.data.model.Lighting
 import fr.barfou.iotproject.data.model.Room
 import fr.barfou.iotproject.ui.utils.dp
 import fr.barfou.iotproject.ui.widget.viewholder.OnRoomClickListener

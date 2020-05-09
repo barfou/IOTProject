@@ -1,9 +1,7 @@
 package fr.barfou.iotproject.ui.utils
 
-import android.content.Context
 import android.util.TypedValue
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import kotlin.math.roundToInt
 
 /**

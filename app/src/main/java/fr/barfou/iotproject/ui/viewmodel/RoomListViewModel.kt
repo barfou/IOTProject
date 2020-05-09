@@ -3,7 +3,6 @@ package fr.barfou.iotproject.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import fr.barfou.iotproject.data.model.Lighting
 import fr.barfou.iotproject.data.model.Room
 import fr.barfou.iotproject.data.repo.RoomRepository
 import kotlinx.coroutines.launch
@@ -33,14 +32,6 @@ open class RoomListViewModel (
             }
         }
     }
-
-    /*fun observeAlightChangesRoom202(onAlightChange: onSuccess<MutableList<Lighting>>) {
-        viewModelScope.launch {
-            repository.observeChangeOnNestedDataRoom202 {
-                onAlightChange(it)
-            }
-        }
-    }*/
 
     companion object Factory: ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
